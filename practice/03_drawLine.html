@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>DrawLine</title>
+    <script src="./js/three.js"></script>
+</head>
+<body>
+    <script>
+        console.log('THREE对象',THREE); 
+        //场景
+        var scene = new THREE.Scene();
+        //相机
+        var camera = new THREE.PerspectiveCamera(45,window.innerWidth / window.innerHeight,1,500);
+        camera.position.set(0,0,100);
+        camera.lookAt(0,0,0);
+        //渲染器
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth,window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+        // //循环渲染
+        // function animate(){
+        //     requestAnimationFrame(animate);
+        //     renderer.render(scene,camera);
+        // }
+        
+        //定义材质：线条的材质只有LineBasicMaterial、LineDashedMaterial
+        var material = new THREE.LineBasicMaterial({color : 0x0000ff});
+        //定义几何体：Geometry是一种几何体，它的属性vertices能存放很多点
+        var geometry = new THREE.Geometry();
+        geometry.vertices.push(new THREE.Vector3(-10,0,0));
+        geometry.vertices.push(new THREE.Vector3(0,10,0));
+        geometry.vertices.push(new THREE.Vector3(10,0,0));
+        //画线
+        //注意，线是画在每一对连续的顶点之间的，
+        //而不会在第一个顶点和最后一个顶点之间绘制线条（所以线条并未闭合）。
+        var line = new THREE.Line(geometry,material);
+
+        //将线添加到场景中
+        scene.add(line);
+        //渲染
+        renderer.render(scene,camera);
+    </script>
+</body>
+</html>
