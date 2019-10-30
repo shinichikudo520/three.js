@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>three.js入门</title>
+    <script src="./js/three.js"></script>
+
+</head>
+<body>
+    <script>
+        
+        //创建一个矩形
+        //threejs中的几个主要对象：场景、相机、渲染器
+        //1. 场景
+        var scene = new THREE.Scene();
+        //2. 相机：PerspectiveCamera是透视相机
+        /*
+            PerspectiveCamera(arg1,arg2,arg3,arg4);
+            arg1是视野角度，表示在显示器上看到场景的范围，是一个角度单位
+            arg2是长宽比
+            agr3是近截面，当物体比相机近截面近时，不会被渲染，可暂不考虑
+            arg4是远截面，当物体比相机远截面远时，不会被渲染，可暂不考虑
+        */
+        var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+        //3. 渲染器
+        var renderer = new THREE.WebGLRenderer();
+        //3.1 setSize设置渲染器尺寸
+        /*
+            setSize(width,height,updateStyle);
+            当你希望保持你的应用程序尺寸，但以较低的分辨率来渲染，可以将第三个参数updateStyle设置为false
+            比如：假设你的<canvas>已经具有100%的宽高，调用setSize(window.innerWidth / 2,window.innerHeight / 2,false)，
+                会使程序在渲染时保留你的应用程序尺寸，以一半的分辨率来进行渲染。
+        */
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        //3.2 将renderer（渲染器）的dom元素（renderer.domElement）添加到HTML稳定中，这就是渲染器用来显示场景给我们看的<canvas>元素
+        document.body.appendChild(renderer.domElement);
+        
+        //4. 添加物体到场景中
+        var geometry = new THREE.CubeGeometry(1,1,1);
+        //MeshBasicMaterial是一种材质
+        var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+        //Mesh（网格）：Mesh(几何体,材质);
+        var mesh = new THREE.Mesh(geometry, material); 
+        //可以直接将网格添加至场景
+        scene.add(mesh);
+        camera.position.z = 5;
+
+        //5. 渲染循环
+        function animate() {
+            //对场景进行绘制的循环，刷新率是60次/秒
+            requestAnimationFrame(animate);
+            //让矩形旋转起来
+            mesh.rotation.x += 0.1;
+            mesh.rotation.y += 0.1;
+
+            //对场景的渲染
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
+</body>
+</html>
